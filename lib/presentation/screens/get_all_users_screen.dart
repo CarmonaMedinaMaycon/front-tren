@@ -1,68 +1,58 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import '../../data/repository/user_repository.dart';
-// import '../cubit/user_cubit.dart';
-// import '../cubit/user_state.dart';
-
-// class UserListView extends StatelessWidget {
-//   const UserListView({super.key});
+// class TrenListView extends StatelessWidget {
+//   const TrenListView({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('User List'),
+//     return BlocProvider(
+//       create: (context) => TrenCubit(
+//         trenRepository: RepositoryProvider.of<TrenRepository>(context),
 //       ),
-//       body: BlocProvider(
-//         create: (context) => UserCubit(
-//           userRepository: RepositoryProvider.of<UserRepository>(context),
+//       child: Scaffold(
+//         appBar: AppBar(
+//           title: const Text('Tren List'),
 //         ),
-//         child: const UserListScreen(),
+//         body: const TrenListScreen(),
+//         floatingActionButton: Builder(
+//           builder: (context) {
+//             return FloatingActionButton(
+//               onPressed: () => _showAddTrenDialog(context),
+//               child: const Icon(Icons.add),
+//             );
+//           },
+//         ),
 //       ),
 //     );
 //   }
 // }
 
-// class UserListScreen extends StatelessWidget {
-//   const UserListScreen({super.key});
+
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final userCubit = BlocProvider.of<UserCubit>(context); //
-
-//     return Column(
-//       children: [
-//         ElevatedButton(
-//           onPressed: () {
-//             userCubit.fetchAllUsers();
-//           },
-//           child: const Text('Fetch Users'),
-//         ),
-//         Expanded(
-//           child: BlocBuilder<UserCubit, UserState>(
-//             builder: (context, state) {
-//               if (state is UserLoading) {
-//                 return const Center(child: CircularProgressIndicator());
-//               } else if (state is UserSuccess) {
-//                 final users = state.users;
-//                 return ListView.builder(
-//                   itemCount: users.length,
-//                   itemBuilder: (context, index) {
-//                     final user = users[index];
-//                     return ListTile(
-//                       title: Text(user.fullName),
-//                       subtitle: Text(user.email),
-//                     );
-//                   },
-//                 );
-//               } else if (state is UserError) {
-//                 return Center(child: Text('Error: ${state.message}'));
-//               }
-//               return const Center(child: Text('Press the button to fetch users'));
-//             },
+//     return MultiRepositoryProvider(
+//       providers: [
+//         RepositoryProvider(
+//           create: (context) => TrenRepository(
+//             apiUrl: 'https://wbjleyd813.execute-api.us-east-1.amazonaws.com/Prod/tren',
 //           ),
 //         ),
 //       ],
+//       child: BlocProvider(
+//         create: (context) => TrenCubit(
+//           trenRepository: RepositoryProvider.of<TrenRepository>(context),
+//         ),
+//         child: MaterialApp(
+//           title: 'Flutter Demo',
+//           theme: ThemeData(
+//             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//             useMaterial3: true,
+//           ),
+//           home: const TrenListView(),
+//         ),
+//       ),
 //     );
 //   }
 // }

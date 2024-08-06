@@ -26,7 +26,8 @@ class TrenDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Modelo: ${tren.modelo}', style: Theme.of(context).textTheme.headlineMedium),
+            Text('Modelo: ${tren.modelo}',
+                style: Theme.of(context).textTheme.headlineMedium),
             Text('Fabricante: ${tren.fabricante}'),
             Text('Longuitud: ${tren.longuitud}'),
             Text('Capacidad: ${tren.capacidad.toString()}'),
@@ -39,8 +40,10 @@ class TrenDetailScreen extends StatelessWidget {
   void _showEditTrenDialog(BuildContext context, TrenModel tren) {
     final _modeloController = TextEditingController(text: tren.modelo);
     final _fabricanteController = TextEditingController(text: tren.fabricante);
-    final _longuitudController = TextEditingController(text: tren.longuitud);
-    final _capacidadController = TextEditingController(text: tren.capacidad.toString());
+    final _longuitudController =
+        TextEditingController(text: tren.longuitud.toString());
+    final _capacidadController =
+        TextEditingController(text: tren.capacidad.toString());
 
     showDialog(
       context: context,
@@ -76,11 +79,12 @@ class TrenDetailScreen extends StatelessWidget {
                   id: tren.id,
                   modelo: _modeloController.text,
                   fabricante: _fabricanteController.text,
-                  longuitud: _longuitudController.text,
+                  longuitud: double.parse(_longuitudController.text),
                   capacidad: double.parse(_capacidadController.text),
                 );
                 BlocProvider.of<TrenCubit>(context).updateTren(updatedTren);
-                Navigator.of(context).pop();
+                BlocProvider.of<TrenCubit>(context).fetchAllTrenes();
+                Navigator.of(context).pop;
               },
               child: const Text('Update'),
             ),
